@@ -1,26 +1,21 @@
-// This file is required by karma.conf.js and loads recursively all the .spec and framework files
+// src/test.ts
 
-import 'zone.js/testing';
-import { getTestBed } from '@angular/core/testing';
+import "zone.js/testing";
+import { getTestBed } from "@angular/core/testing";
 import {
   BrowserDynamicTestingModule,
-  platformBrowserDynamicTesting
-} from '@angular/platform-browser-dynamic/testing';
+  platformBrowserDynamicTesting,
+} from "@angular/platform-browser-dynamic/testing";
 
-declare const require: {
-  context(path: string, deep?: boolean, filter?: RegExp): {
-    <T>(id: string): T;
-    keys(): string[];
-  };
-};
+// Angular CLI's Webpack doesn't support `import.meta.glob` or `require.context` in v17.
+// Instead, use this workaround to include all spec files explicitly.
 
-// First, initialize the Angular testing environment.
+// Add new test files here manually:
+import "./app/app.component.spec";
+import "./app/core/service/data/product/product-implementation.service.spec";
+import "./app/state/products/products.state.spec";
+
 getTestBed().initTestEnvironment(
   BrowserDynamicTestingModule,
-  platformBrowserDynamicTesting(),
+  platformBrowserDynamicTesting()
 );
-
-// Then we find all the tests.
-const context = require.context('./', true, /\.spec\.ts$/);
-// And load the modules.
-context.keys().forEach(context);
