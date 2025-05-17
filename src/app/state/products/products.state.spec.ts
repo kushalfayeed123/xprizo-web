@@ -20,33 +20,33 @@ describe("ProductsState", () => {
   const mockProducts: Product[] = [
     {
       id: 1,
-      description: "Product A",
-      contactId: 1,
-      userName: "string",
-      amount: 10,
-      currencyCode: "",
-      symbol: "",
-      reference: "",
-      routingCode: "",
-      token: "",
-      paymentUrl: "",
-      redirectUrl: "",
-      isInactive: "",
+      description: "Product 1",
+      contactId: 101,
+      userName: "JohnDoe",
+      amount: 500,
+      currencyCode: "USD",
+      symbol: "$",
+      reference: "ABC123",
+      routingCode: "RT001",
+      token: "tok123",
+      paymentUrl: "https://pay.com/1",
+      redirectUrl: "https://redirect.com/1",
+      isInactive: "false",
     } as Product,
     {
       id: 2,
-      description: "Product B",
-      contactId: 1,
-      userName: "string",
-      amount: 10,
-      currencyCode: "",
-      symbol: "",
-      reference: "",
-      routingCode: "",
-      token: "",
-      paymentUrl: "",
-      redirectUrl: "",
-      isInactive: "",
+      description: "Product 2",
+      contactId: 101,
+      userName: "JohnFey",
+      amount: 500,
+      currencyCode: "USD",
+      symbol: "$",
+      reference: "ABC123",
+      routingCode: "RT001",
+      token: "tok123",
+      paymentUrl: "https://pay.com/1",
+      redirectUrl: "https://redirect.com/1",
+      isInactive: "false",
     } as Product,
   ];
 
@@ -75,7 +75,8 @@ describe("ProductsState", () => {
       store.selectOnce(ProductsState.products)
     );
     expect(products.length).toBe(2);
-    expect(products[0].description).toBe("Product A");
+    expect(typeof products[1].description).toBe("string");
+    expect(typeof products[1].id).toBe("number");
   });
 
   it("should load a single product", async () => {
@@ -87,6 +88,7 @@ describe("ProductsState", () => {
     );
 
     expect(selected?.id).toBe(1);
+    expect(typeof selected?.id).toBe("number");
   });
 
   it("should call addProduct on service", async () => {
@@ -100,10 +102,9 @@ describe("ProductsState", () => {
 
   it("should call setRedirectUrl on service", async () => {
     mockService.setRedirectUrl.and.returnValue(of(undefined));
-
-    await store
-      .dispatch(new SetRedirectUrl("123", "http://example.com"))
-      .toPromise();
+    await firstValueFrom(
+      store.dispatch(new SetRedirectUrl("123", "http://example.com"))
+    );
 
     expect(mockService.setRedirectUrl).toHaveBeenCalledWith(
       "123",

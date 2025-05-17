@@ -9,8 +9,9 @@ import { ProductsState } from "./state/products/products.state";
 import { NgxsLoggerPluginModule } from "@ngxs/logger-plugin";
 import { NgxsReduxDevtoolsPluginModule } from "@ngxs/devtools-plugin";
 import { environment } from "src/environments/environment";
-import { NgxsFormPluginModule } from '@ngxs/form-plugin';
-import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
+import { NgxsFormPluginModule } from "@ngxs/form-plugin";
+import { NgxsStoragePluginModule, StorageOption } from "@ngxs/storage-plugin";
+import { HttpClientModule } from "@angular/common/http";
 
 @NgModule({
   declarations: [AppComponent],
@@ -18,20 +19,17 @@ import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
     BrowserModule,
     AppRoutingModule,
     ServiceModule,
+    HttpClientModule,
     NgxsModule.forRoot([ProductsState]),
     NgxsLoggerPluginModule.forRoot(),
 
-    // NgxsStoragePluginModule.forRoot({
-    //   keys: ["products"], // state slices to persist
-    //   storage: StorageOption.LocalStorage, // or sessionStorage
-    // }),
+    NgxsStoragePluginModule.forRoot({
+      keys: ["products"], // state slices to persist
+      storage: StorageOption.LocalStorage, // or sessionStorage
+    }),
     NgxsReduxDevtoolsPluginModule.forRoot({
       disabled: environment.production, // enable only in dev mode
     }),
-     NgxsModule.forRoot([], { developmentMode: /** !environment.production */ false }),
-     NgxsReduxDevtoolsPluginModule.forRoot(),
-     NgxsFormPluginModule.forRoot(),
-     NgxsStoragePluginModule.forRoot(),
   ],
   providers: [],
   bootstrap: [AppComponent],
