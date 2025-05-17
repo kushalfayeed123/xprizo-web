@@ -12,6 +12,8 @@ import { environment } from "src/environments/environment";
 import { NgxsFormPluginModule } from "@ngxs/form-plugin";
 import { NgxsStoragePluginModule, StorageOption } from "@ngxs/storage-plugin";
 import { HttpClientModule } from "@angular/common/http";
+import { ProductModule } from "./modules/product/product.module";
+import { FormsModule } from "@angular/forms";
 
 @NgModule({
   declarations: [AppComponent],
@@ -19,6 +21,8 @@ import { HttpClientModule } from "@angular/common/http";
     BrowserModule,
     AppRoutingModule,
     ServiceModule,
+    ProductModule,
+    FormsModule,
     HttpClientModule,
     NgxsModule.forRoot([ProductsState]),
     NgxsLoggerPluginModule.forRoot(),

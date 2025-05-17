@@ -2,15 +2,11 @@
 
 import { State, Action, StateContext, Selector } from "@ngxs/store";
 import { Injectable } from "@angular/core";
-import {
-  LoadProducts,
-  LoadProduct,
-  AddProduct,
-  SetRedirectUrl,
-} from "./products.actions";
+
 import { tap } from "rxjs/operators";
 import { ProductAbstractionService } from "src/app/core/service/data/product/product.abstraction.service";
 import { Product } from "src/app/core/models/product.model";
+import { Products } from "./products.actions";
 
 export interface ProductsStateModel {
   products: Product[];
@@ -38,7 +34,7 @@ export class ProductsState {
     return state.selectedProduct;
   }
 
-  @Action(LoadProducts)
+  @Action(Products.LoadProducts)
   loadProducts(ctx: StateContext<ProductsStateModel>) {
     return this.productService.getProducts().pipe(
       tap((products) => {
@@ -47,8 +43,11 @@ export class ProductsState {
     );
   }
 
-  @Action(LoadProduct)
-  loadProduct(ctx: StateContext<ProductsStateModel>, action: LoadProduct) {
+  @Action(Products.LoadProduct)
+  loadProduct(
+    ctx: StateContext<ProductsStateModel>,
+    action: Products.LoadProduct
+  ) {
     return this.productService.getProduct(action.id).pipe(
       tap((product) => {
         ctx.patchState({ selectedProduct: product });
@@ -56,13 +55,19 @@ export class ProductsState {
     );
   }
 
-  @Action(AddProduct)
-  addProduct(ctx: StateContext<ProductsStateModel>, action: AddProduct) {
+  @Action(Products.AddProduct)
+  addProduct(
+    ctx: StateContext<ProductsStateModel>,
+    action: Products.AddProduct
+  ) {
     return this.productService.addProduct(action.payload);
   }
 
-  @Action(SetRedirectUrl)
-  setRedirectUrl(_: StateContext<ProductsStateModel>, action: SetRedirectUrl) {
+  @Action(Products.SetRedirectUrl)
+  setRedirectUrl(
+    _: StateContext<ProductsStateModel>,
+    action: Products.SetRedirectUrl
+  ) {
     return this.productService.setRedirectUrl(action.id, action.url);
   }
 }

@@ -1,0 +1,58 @@
+<div class="min-h-screen bg-gray-100 p-6">
+    <div class="max-w-6xl mx-auto bg-white rounded-2xl shadow-md overflow-hidden grid grid-cols-1 md:grid-cols-2 gap-10 p-8">
+      
+      <!-- Left: Product Image -->
+      <div class="flex justify-center items-center">
+        <img
+          src="./assets/images/product.jpg"
+          alt="Product Image"
+          class="rounded-xl shadow-lg w-full max-w-md object-contain"
+        />
+      </div>
+  
+      <!-- Right: Product Info -->
+      <div class="flex flex-col justify-between">
+        <div>
+          <h1 class="text-3xl font-bold text-gray-800 mb-4">{{ product.description }}</h1>
+          <p class="text-gray-600 mb-4">
+            Reference Code: <span class="font-medium">{{ product.reference }}</span>
+          </p>
+          <div class="text-xl font-semibold text-green-600 mb-4">
+            {{ product.symbol }}{{ product.amount | number:'1.2-2' }} <span class="text-sm text-gray-500">({{ product.currencyCode }})</span>
+          </div>
+          <p class="text-gray-500 mb-6">
+            Enjoy this premium product curated by {{ product.userName }}. Secure and fast delivery guaranteed.
+          </p>
+        </div>
+  
+        <!-- Purchase Section -->
+        <div class="space-y-4">
+          <a
+            [href]="product.paymentUrl"
+            target="_blank"
+            class="block w-full text-center py-3 px-6 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition duration-300"
+          >
+            Purchase Now
+          </a>
+  
+          <div class="text-xs text-gray-400 text-center">
+            By proceeding, you agree to our <a href="#" class="underline">Terms</a> and <a href="#" class="underline">Privacy Policy</a>.
+          </div>
+        </div>
+      </div>
+  
+    </div>
+  
+    <!-- Optional: Seller Info & Extras -->
+    <div class="max-w-6xl mx-auto mt-10 p-6 bg-white rounded-xl shadow-sm">
+      <h2 class="text-lg font-semibold mb-3">Seller Info</h2>
+      <ul class="text-sm text-gray-600 space-y-1">
+        <li><strong>Seller:</strong> {{ product.userName }}</li>
+        <li><strong>Contact ID:</strong> {{ product.contactId }}</li>
+        <li><strong>Routing Code:</strong> {{ product.routingCode }}</li>
+        <li><strong>Status:</strong> <span [ngClass]="product.isInactive === 'true' ? 'text-red-500' : 'text-green-500'">
+          {{ product.isInactive === 'true' ? 'Inactive' : 'Active' }}</span></li>
+      </ul>
+    </div>
+  </div>
+  

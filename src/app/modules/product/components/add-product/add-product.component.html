@@ -1,0 +1,93 @@
+<div class="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-2xl mx-auto bg-white rounded-2xl shadow-xl p-8">
+      <h2 class="text-3xl font-bold text-gray-800 mb-6 border-b pb-4">➕ Add New Product</h2>
+  
+      <form (ngSubmit)="addProduct()" class="space-y-6">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Product Description</label>
+          <input
+            [(ngModel)]="product.description"
+            name="description"
+            type="text"
+            required
+            placeholder="e.g. Premium Toolkit"
+            class="w-full border border-gray-300 rounded-lg px-4 py-2 shadow-sm focus:ring-blue-500 focus:border-blue-500"
+          />
+        </div>
+  
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Amount</label>
+            <input
+              [(ngModel)]="product.amount"
+              name="amount"
+              type="number"
+              required
+              placeholder="e.g. 99.99"
+              class="w-full border border-gray-300 rounded-lg px-4 py-2 shadow-sm focus:ring-blue-500 focus:border-blue-500"
+            />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Currency</label>
+            <select
+              [(ngModel)]="product.currencyCode"
+              name="currencyCode"
+              class="w-full border border-gray-300 rounded-lg px-4 py-2 shadow-sm focus:ring-blue-500 focus:border-blue-500"
+            >
+              <option value="USD">USD</option>
+              <option value="NGN">NGN</option>
+              <option value="EUR">EUR</option>
+            </select>
+          </div>
+        </div>
+  
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">User Name</label>
+          <input
+            [(ngModel)]="product.userName"
+            name="userName"
+            type="text"
+            required
+            placeholder="e.g. JaneSmith"
+            class="w-full border border-gray-300 rounded-lg px-4 py-2 shadow-sm focus:ring-blue-500 focus:border-blue-500"
+          />
+        </div>
+  
+        <!-- Buttons -->
+        <div class="flex justify-between gap-4 pt-4">
+          <button
+            type="button"
+            (click)="goBack()"
+            class="w-1/2 bg-gray-200 text-gray-700 py-3 rounded-lg font-medium hover:bg-gray-300 transition"
+          >
+            Cancel
+          </button>
+  
+          <button
+            type="submit"
+            class="w-1/2 bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition"
+          >
+            Add Product
+          </button>
+        </div>
+      </form>
+    </div>
+  
+    <!-- ✅ Success Modal -->
+    <div
+      *ngIf="success"
+      class="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50"
+    >
+      <div class="bg-white rounded-2xl shadow-xl max-w-md w-full p-6 text-center">
+        <h3 class="text-2xl font-bold text-green-600 mb-2">🎉 Product Added!</h3>
+        <p class="text-gray-600 mb-6">Your product has been successfully added.</p>
+        <button
+          (click)="goBack()"
+          class="px-6 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700"
+        >
+          Okay
+        </button>
+      </div>
+    </div>
+  </div>
+  
