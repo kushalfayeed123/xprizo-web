@@ -182,27 +182,27 @@ export class ProductImplementationService implements ProductAbstractionService {
   };
 
   getProducts(): Observable<Product[]> {
-    return of(this.products);
-    // return this.api
-    //   .get<Product[]>("/Item/ProductList")
-    //   .pipe(map((response) => mappedProduct(response) as Product[]));
+    // return of(this.products);
+    return this.api
+      .get<Product[]>("/Item/ProductList")
+      .pipe(map((response) => mappedProduct(response) as Product[]));
   }
 
   getProduct(id: number): Observable<Product> {
-    return of(this.selectedProduct);
-    // const params: any = { id };
-    // return this.api
-    //   .get<Product>("/Item/GetProduct", params)
-    //   .pipe(map((response) => mappedProduct(response) as Product));
+    // return of(this.selectedProduct);
+    const params: any = { id };
+    return this.api
+      .get<Product>("/Item/GetProduct", params)
+      .pipe(map((response) => mappedProduct(response) as Product));
   }
 
   addProduct(payload: ProductPayload): Observable<void> {
-    return this.api.post("/Item/GetProduct", payload);
+    return this.api.post("/Item/AddProduct", payload);
   }
 
   setRedirectUrl(id: string, url: string): Observable<void> {
     const params: any = { productId: id, value: url };
-    return this.api.put("/Item/SetProductRedirectUrl", params);
+    return this.api.put("/Item/SetProductRedirectUrl", null, params);
   }
 }
 

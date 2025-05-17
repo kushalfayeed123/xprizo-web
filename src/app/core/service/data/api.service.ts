@@ -21,8 +21,9 @@ export class ApiService {
       headers: this.getHeaders(),
     });
   }
-  put<T>(url: string, params: any = {}) {
-    return this.http.put<T>(`${this.BASE_URL}${url}`, {
+  
+  put<T>(url: string, body: any = {}, params: any = {}) {
+    return this.http.put<T>(`${this.BASE_URL}${url}`, body, {
       headers: this.getHeaders(),
       params,
     });

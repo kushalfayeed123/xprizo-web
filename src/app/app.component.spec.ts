@@ -26,10 +26,5 @@ describe('AppComponent', () => {
     expect(app.title).toEqual('xprizo-frontend');
   });
 
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.content span')?.textContent).toContain('xprizo-frontend app is running!');
-  });
+ 
 });

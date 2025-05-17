@@ -10,10 +10,9 @@ import { ProductsState } from "src/app/state/products/products.state";
   styleUrl: "./product-detail.component.css",
 })
 export class ProductDetailComponent {
-  product!: Product;
+  product: Product = <Product>{};
 
   constructor(private route: ActivatedRoute, private store: Store) {
-
     this.store.select(ProductsState.selectedProduct).subscribe({
       next: (res) => {
         this.product = res!;

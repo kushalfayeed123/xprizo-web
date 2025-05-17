@@ -3,15 +3,11 @@
 import { TestBed } from "@angular/core/testing";
 import { NgxsModule, Store } from "@ngxs/store";
 import { ProductsState } from "./products.state";
-import {
-  LoadProducts,
-  LoadProduct,
-  AddProduct,
-  SetRedirectUrl,
-} from "./products.actions";
+
 import { firstValueFrom, of } from "rxjs";
 import { Product } from "src/app/core/models/product.model";
 import { ProductAbstractionService } from "src/app/core/service/data/product/product.abstraction.service";
+import { Products } from "./products.actions";
 
 describe("ProductsState", () => {
   let store: Store;
@@ -70,7 +66,7 @@ describe("ProductsState", () => {
   it("should load products", async () => {
     mockService.getProducts.and.returnValue(of(mockProducts));
 
-    await firstValueFrom(store.dispatch(new LoadProducts()));
+    await firstValueFrom(store.dispatch(new Products.LoadProducts()));
     const products = await firstValueFrom(
       store.selectOnce(ProductsState.products)
     );
@@ -82,7 +78,7 @@ describe("ProductsState", () => {
   it("should load a single product", async () => {
     const product = mockProducts[0];
     mockService.getProduct.and.returnValue(of(product));
-    await firstValueFrom(store.dispatch(new LoadProduct(1)));
+    await firstValueFrom(store.dispatch(new Products.LoadProduct(1)));
     const selected = await firstValueFrom(
       store.selectOnce(ProductsState.selectedProduct)
     );
@@ -95,7 +91,7 @@ describe("ProductsState", () => {
     mockService.addProduct.and.returnValue(of(undefined));
     const payload = { name: "New Product" } as any;
 
-    await store.dispatch(new AddProduct(payload)).toPromise();
+    await store.dispatch(new Products.AddProduct(payload)).toPromise();
 
     expect(mockService.addProduct).toHaveBeenCalledWith(payload);
   });
@@ -103,7 +99,7 @@ describe("ProductsState", () => {
   it("should call setRedirectUrl on service", async () => {
     mockService.setRedirectUrl.and.returnValue(of(undefined));
     await firstValueFrom(
-      store.dispatch(new SetRedirectUrl("123", "http://example.com"))
+      store.dispatch(new Products.SetRedirectUrl("123", "http://example.com"))
     );
 
     expect(mockService.setRedirectUrl).toHaveBeenCalledWith(

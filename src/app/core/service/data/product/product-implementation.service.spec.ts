@@ -93,7 +93,7 @@ describe("ProductImplementationService", () => {
 
       service.addProduct(payload).subscribe(() => {
         expect(apiService.post).toHaveBeenCalledWith(
-          "/Item/GetProduct",
+          "/Item/AddProduct",
           payload
         );
         done();
@@ -106,6 +106,7 @@ describe("ProductImplementationService", () => {
       service.setRedirectUrl("1", "https://new-redirect.com").subscribe(() => {
         expect(apiService.put).toHaveBeenCalledWith(
           "/Item/SetProductRedirectUrl",
+          null,
           {
             productId: "1",
             value: "https://new-redirect.com",
