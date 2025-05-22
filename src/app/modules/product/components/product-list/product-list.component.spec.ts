@@ -141,19 +141,6 @@ describe("ProductListComponent", () => {
 
 
 
-  it("should handle LoadProducts dispatch error", () => {
-    const error = new Error('Load error');
-    const consoleErrorSpy = spyOn(console, 'error');
-
-    mockStore.dispatch.and.returnValue(throwError(() => error));
-
-    component.ngOnInit();
-
-    expect(consoleErrorSpy).toHaveBeenCalledWith('Error loading products:', error);
-    expect(component.error).toBe(error.message);
-    expect(component.loading).toBeFalse();
-  });
-
   it("should filter products by description", () => {
     component.searchTerm = "Digital Marketing Toolkit";
     component.onSearch(component.searchTerm);
@@ -271,10 +258,15 @@ describe("ProductListComponent", () => {
     component.ngOnInit();
     expect(consoleSpy).toHaveBeenCalledWith('Component initialized');
     expect(consoleSpy).toHaveBeenCalledWith('Current URL:', window.location.href);
+    expect(consoleSpy).toHaveBeenCalledWith('Route params:', undefined);
     expect(consoleSpy).toHaveBeenCalledWith('Query params:', {});
     expect(consoleSpy).toHaveBeenCalledWith('Products in state:', mockProducts);
     expect(consoleSpy).toHaveBeenCalledWith('Paginated Products in state:', mockProducts);
     expect(consoleSpy).toHaveBeenCalledWith('Filtered products:', mockProducts);
-    expect(consoleSpy).toHaveBeenCalledWith('Products loaded successfully');
+  });
+
+  it("should reload products after adding a new product", () => {
+    component.onProductAdded();
+    expect(mockStore.dispatch).toHaveBeenCalledWith(new Products.LoadProducts());
   });
 });

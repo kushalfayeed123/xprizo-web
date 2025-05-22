@@ -20,7 +20,6 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     // Load products and filter for featured ones
-    this.store.dispatch(new Products.LoadProducts());
     this.store.select(ProductsState.products).subscribe({
       next: (products) => {
         if (products) {

@@ -3,8 +3,7 @@ import { Router } from "@angular/router";
 import { Store } from "@ngxs/store";
 import { Products } from "src/app/state/products/products.actions";
 import { ProductPayload } from "src/app/core/models/product-payload.model";
-import { v4 as uuidv4 } from 'uuid';
-
+import { v4 as uuidv4 } from "uuid";
 
 @Component({
   selector: "app-add-product",
@@ -29,7 +28,12 @@ export class AddProductComponent {
 
       this.store.dispatch(new Products.AddProduct(this.product)).subscribe({
         next: () => {
-          this.success = true;
+          // Reload products after successful addition
+          this.store.dispatch(new Products.LoadProducts()).subscribe({
+            next: () => {
+              this.success = true;
+            },
+          });
         },
         error: (error) => {
           console.error("Error adding product:", error);

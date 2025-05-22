@@ -1,17 +1,19 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { Router } from "@angular/router";
 import { Store } from "@ngxs/store";
+import { Observable, Subject } from "rxjs";
+import { takeUntil } from "rxjs/operators";
 import { Product } from "src/app/core/models/product.model";
 import { Products } from "src/app/state/products/products.actions";
 import { ProductsState } from "src/app/state/products/products.state";
 import { ActivatedRoute } from "@angular/router";
 
 @Component({
-  selector: "app-productlist",
+  selector: "app-product-list",
   templateUrl: "./product-list.component.html",
   styleUrl: "./product-list.component.css",
 })
-export class ProductListComponent implements OnInit {
+export class ProductListComponent implements OnInit, OnDestroy {
   searchTerm = "";
   products: Product[] = [];
   filteredProducts: Product[] = [];
@@ -37,15 +39,19 @@ export class ProductListComponent implements OnInit {
   // Make store public for template access
   ProductsState = ProductsState;
 
+  private destroy$ = new Subject<void>();
+
   constructor(
     private router: Router,
     public store: Store,
     public route: ActivatedRoute
   ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     console.log('Component initialized');
     console.log('Current URL:', window.location.href);
+    console.log('Route params:', this.route.snapshot.params);
+    console.log('Query params:', this.route.snapshot.queryParams);
     
     // Check URL parameters for payment status
     const params = this.route.snapshot.queryParams;
@@ -61,23 +67,21 @@ export class ProductListComponent implements OnInit {
       console.log('Modal should show:', this.showPaymentStatus);
     }
 
-    // Reset loading state
-    this.loading = true;
-    this.error = null;
-
     // Subscribe to products state
-    this.store.select(ProductsState.products).subscribe({
-      next: (products) => {
-        console.log('Products in state:', products);
-        this.products = products;
-        this.loading = false;
-      },
-      error: (error) => {
-        console.error('Error loading products:', error);
-        this.error = error.message;
-        this.loading = false;
-      }
-    });
+    this.store.select(ProductsState.products)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (products) => {
+          console.log('Products in state:', products);
+          this.products = products;
+          this.loading = false;
+        },
+        error: (error) => {
+          console.error('Error in products subscription:', error);
+          this.error = error.message;
+          this.loading = false;
+        }
+      });
 
     this.store.select(ProductsState.paginatedProducts).subscribe(products => {
       console.log('Paginated Products in state:', products);
@@ -86,18 +90,11 @@ export class ProductListComponent implements OnInit {
     this.store.select(ProductsState.filteredProducts).subscribe(filtered => {
       console.log('Filtered products:', filtered);
     });
+  }
 
-    // Load products
-    this.store.dispatch(new Products.LoadProducts()).subscribe({
-      next: () => {
-        console.log('Products loaded successfully');
-      },
-      error: (error) => {
-        console.error('Error loading products:', error);
-        this.error = error.message;
-        this.loading = false;
-      }
-    });
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   onSearch(searchTerm: string) {
@@ -138,5 +135,12 @@ export class ProductListComponent implements OnInit {
       queryParams: {},
       replaceUrl: true
     });
+  }
+
+  onProductAdded(): void {
+    // Reload products after a new product is added
+    this.store.dispatch(new Products.LoadProducts())
+      .pipe(takeUntil(this.destroy$))
+      .subscribe();
   }
 }
