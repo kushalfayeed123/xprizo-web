@@ -1,29 +1,32 @@
 // src/app/core/api.service.ts
 import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { Injectable } from "@angular/core";
+import { Injectable, Inject } from "@angular/core";
+import { environment } from "src/environments/environment";
 
 @Injectable({ providedIn: "root" })
 export class ApiService {
-  private readonly BASE_URL = "https://test.xprizo.com/api";
-  private readonly API_KEY = "YOUR_API_KEY_HERE";
+  private readonly API_KEY = "914-bee3ee10-f2fe-4086-a2b5-5cba70d5958f";
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    @Inject("environment") private env: typeof environment
+  ) {}
 
   get<T>(url: string, params: any = {}) {
-    return this.http.get<T>(`${this.BASE_URL}${url}`, {
+    return this.http.get<T>(`${this.env.apiUrl}${url}`, {
       headers: this.getHeaders(),
       params,
     });
   }
 
   post<T>(url: string, body: any = {}) {
-    return this.http.post<T>(`${this.BASE_URL}${url}`, body, {
+    return this.http.post<T>(`${this.env.apiUrl}${url}`, body, {
       headers: this.getHeaders(),
     });
   }
   
   put<T>(url: string, body: any = {}, params: any = {}) {
-    return this.http.put<T>(`${this.BASE_URL}${url}`, body, {
+    return this.http.put<T>(`${this.env.apiUrl}${url}`, body, {
       headers: this.getHeaders(),
       params,
     });
@@ -31,7 +34,7 @@ export class ApiService {
 
   private getHeaders() {
     return new HttpHeaders({
-      "x-api-key": this.API_KEY,
+      "X-API-KEY": this.API_KEY,
       "Content-Type": "application/json",
     });
   }

@@ -1,15 +1,11 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
-import { ProductLayoutComponent } from "./modules/product/components/product-layout/product-layout.component";
+import { HomeComponent } from "./modules/home/home.component";
 
 const routes: Routes = [
-
-  {
-    path: "",
-    component: ProductLayoutComponent,
-    loadChildren: () =>
-      import("./modules/product/product.module").then((m) => m.ProductModule),
-  },
+  { path: '', component: HomeComponent },
+  { path: 'products', loadChildren: () => import('./modules/product/product.module').then(m => m.ProductModule) },
+  { path: '**', redirectTo: '' }
 ];
 
 @NgModule({

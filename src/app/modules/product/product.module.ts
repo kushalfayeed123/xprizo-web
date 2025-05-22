@@ -1,12 +1,12 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
-
 import { ProductRoutingModule } from "./product-routing.module";
 import { ProductLayoutComponent } from "./components/product-layout/product-layout.component";
 import { FormsModule } from "@angular/forms";
 import { ProductListComponent } from "./components/product-list/product-list.component";
 import { ProductDetailComponent } from "./components/product-detail/product-detail.component";
 import { AddProductComponent } from "./components/add-product/add-product.component";
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -15,6 +15,16 @@ import { AddProductComponent } from "./components/add-product/add-product.compon
     ProductDetailComponent,
     AddProductComponent,
   ],
-  imports: [CommonModule, ProductRoutingModule, FormsModule],
+  imports: [
+    CommonModule,
+    ProductRoutingModule,
+    FormsModule,
+    RouterModule,
+    
+  ],
+  exports: [
+    ProductListComponent,
+    ProductDetailComponent
+  ]
 })
 export class ProductModule {}

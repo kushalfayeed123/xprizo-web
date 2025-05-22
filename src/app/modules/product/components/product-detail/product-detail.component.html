@@ -1,58 +1,137 @@
 <div class="min-h-screen bg-gray-100 p-6">
-    <div class="max-w-6xl mx-auto bg-white rounded-2xl shadow-md overflow-hidden grid grid-cols-1 md:grid-cols-2 gap-10 p-8">
-      
-      <!-- Left: Product Image -->
-      <div class="flex justify-center items-center">
-        <img
-          src="./assets/images/product.jpg"
-          alt="Product Image"
-          class="rounded-xl shadow-lg w-full max-w-md object-contain"
+  <!-- Back Button -->
+  <div class="max-w-6xl mx-auto mb-6">
+    <a
+      routerLink="/products"
+      class="inline-flex items-center text-gray-600 hover:text-gray-800 transition-colors duration-200"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-5 w-5 mr-2"
+        viewBox="0 0 20 20"
+        fill="currentColor"
+      >
+        <path
+          fill-rule="evenodd"
+          d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z"
+          clip-rule="evenodd"
         />
+      </svg>
+      Back to Products
+    </a>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="max-w-6xl mx-auto text-center py-12">
+    <div class="inline-block animate-spin rounded-full h-16 w-16 border-4 border-blue-600 border-t-transparent"></div>
+    <p class="mt-4 text-gray-600 text-lg">Loading product details...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error" class="max-w-6xl mx-auto text-center py-12">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-red-500 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+    </svg>
+    <h3 class="text-lg font-medium text-gray-900 mb-2">Error Loading Product</h3>
+    <p class="text-gray-500">{{ error }}</p>
+    <button (click)="goBack()" class="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+      Go Back
+    </button>
+  </div>
+
+  <!-- Product Content -->
+  <div *ngIf="!loading && !error"
+    class="max-w-6xl mx-auto bg-white rounded-2xl shadow-md overflow-hidden grid grid-cols-1 md:grid-cols-2 gap-10 p-8"
+  >
+    <!-- Left: Product Image -->
+    <div class="relative h-96 rounded-2xl overflow-hidden">
+      <div class="absolute inset-0"
+           [style.background-image]="'url(' + product.imageUrl + ')'"
+           style="background-size: cover; background-position: center;">
       </div>
-  
-      <!-- Right: Product Info -->
-      <div class="flex flex-col justify-between">
-        <div>
-          <h1 class="text-3xl font-bold text-gray-800 mb-4">{{ product.description }}</h1>
-          <p class="text-gray-600 mb-4">
-            Reference Code: <span class="font-medium">{{ product.reference }}</span>
-          </p>
-          <div class="text-xl font-semibold text-green-600 mb-4">
-            {{ product.symbol }}{{ product.amount | number:'1.2-2' }} <span class="text-sm text-gray-500">({{ product.currencyCode }})</span>
-          </div>
-          <p class="text-gray-500 mb-6">
-            Enjoy this premium product curated by {{ product.userName }}. Secure and fast delivery guaranteed.
-          </p>
-        </div>
-  
-        <!-- Purchase Section -->
-        <div class="space-y-4">
-          <a
-            [href]="product.paymentUrl"
-            target="_blank"
-            class="block w-full text-center py-3 px-6 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition duration-300"
-          >
-            Purchase Now
-          </a>
-  
-          <div class="text-xs text-gray-400 text-center">
-            By proceeding, you agree to our <a href="#" class="underline">Terms</a> and <a href="#" class="underline">Privacy Policy</a>.
-          </div>
-        </div>
-      </div>
-  
+      <!-- Gradient Overlay -->
+      <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
     </div>
-  
-    <!-- Optional: Seller Info & Extras -->
-    <div class="max-w-6xl mx-auto mt-10 p-6 bg-white rounded-xl shadow-sm">
-      <h2 class="text-lg font-semibold mb-3">Seller Info</h2>
-      <ul class="text-sm text-gray-600 space-y-1">
-        <li><strong>Seller:</strong> {{ product.userName }}</li>
-        <li><strong>Contact ID:</strong> {{ product.contactId }}</li>
-        <li><strong>Routing Code:</strong> {{ product.routingCode }}</li>
-        <li><strong>Status:</strong> <span [ngClass]="product.isInactive === 'true' ? 'text-red-500' : 'text-green-500'">
-          {{ product.isInactive === 'true' ? 'Inactive' : 'Active' }}</span></li>
-      </ul>
+
+    <!-- Right: Product Info -->
+    <div class="flex flex-col justify-between">
+      <div>
+        <h1 class="text-3xl font-bold text-gray-800 mb-4">
+          {{ product.description }}
+        </h1>
+        <p class="text-gray-600 mb-4">
+          Reference Code:
+          <span class="font-medium">{{ product.reference }}</span>
+        </p>
+        <div class="text-xl font-semibold text-green-600 mb-4">
+          {{ product.symbol }}{{ product.amount | number : "1.2-2" }}
+          <span class="text-sm text-gray-500"
+            >({{ product.currencyCode }})</span
+          >
+        </div>
+        <p class="text-gray-500 mb-6">
+          Enjoy this premium product curated by {{ product.userName }}. Secure
+          and fast delivery guaranteed.
+        </p>
+      </div>
+
+      <!-- Purchase Section -->
+      <div class="space-y-4">
+        <button
+          (click)="initiatePayment()"
+          [disabled]="processingPayment"
+          class="block w-full text-center py-3 px-6 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          <span *ngIf="processingPayment" class="inline-flex items-center">
+            <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            Redirecting to Payment...
+          </span>
+          <span *ngIf="!processingPayment">Proceed to Payment</span>
+        </button>
+
+        <div class="text-xs text-gray-400 text-center">
+          By proceeding, you agree to our
+          <a href="#" class="underline">Terms</a> and
+          <a href="#" class="underline">Privacy Policy</a>.
+        </div>
+      </div>
     </div>
   </div>
+
+  <!-- Optional: Seller Info & Extras -->
+  <div *ngIf="!loading && !error" class="max-w-6xl mx-auto mt-10 p-6 bg-white rounded-xl shadow-sm">
+    <h2 class="text-lg font-semibold mb-3">Seller Info</h2>
+    <ul class="text-sm text-gray-600 space-y-1">
+      <li><strong>Seller:</strong> {{ product.userName }}</li>
+      <li><strong>Contact ID:</strong> {{ product.contactId }}</li>
+      <li><strong>Routing Code:</strong> {{ product.routingCode }}</li>
+      <li>
+        <strong>Status:</strong>
+        <span [ngClass]="product.isInactive === true ? 'text-red-500' : 'text-green-500'">
+          {{ product.isInactive === true ? 'Inactive' : 'Active' }}</span>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Payment Status Modal -->
+  <div *ngIf="showPaymentStatus" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center z-50">
+    <div class="relative p-5 border w-96 shadow-lg rounded-md bg-white">
+      <div class="mt-3 text-center">
+        <h3 class="text-lg leading-6 font-medium text-gray-900">Payment Status</h3>
+        <div class="mt-2 px-7 py-3">
+          <p class="text-sm text-gray-500">Your payment is currently {{ paymentStatus?.status }}.</p>
+          <p class="text-sm text-gray-500 mt-2">Reference: {{ paymentStatus?.reference }}</p>
+        </div>
+        <div class="items-center px-4 py-3">
+          <button (click)="closePaymentStatus()" class="px-4 py-2 bg-blue-500 text-white text-base font-medium rounded-md shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300">
+            OK
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
   

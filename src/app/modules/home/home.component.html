@@ -1,0 +1,199 @@
+<!-- Header -->
+<header class="bg-white shadow-md sticky top-0 z-50">
+  <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+    <h1 class="text-2xl font-bold text-blue-600">Xprizo</h1>
+    <nav class="space-x-6 text-sm font-medium">
+      <a routerLink="/" class="text-gray-700 hover:text-blue-600">Home</a>
+      <a routerLink="/products" class="text-gray-700 hover:text-blue-600">Shop</a>
+      <a href="#" class="text-gray-700 hover:text-blue-600">About</a>
+      <a href="#" class="text-gray-700 hover:text-blue-600">Contact</a>
+    </nav>
+  
+  </div>
+</header>
+
+<!-- Hero -->
+<section class="bg-gray-100 py-20">
+  <div class="container mx-auto px-4 text-center">
+    <h2 class="text-4xl md:text-5xl font-bold mb-4 text-gray-900">
+      Discover the Future of Shopping
+    </h2>
+    <p class="text-lg text-gray-600 mb-8">
+      Shop the latest trends with unbeatable prices, only at Xprizo.
+    </p>
+    <button (click)="goToProducts()"
+      class="bg-blue-600 text-white px-6 py-3 rounded-lg text-lg font-medium hover:bg-blue-700 transition">
+      Shop Now
+    </button>
+  </div>
+</section>
+
+<!-- Featured Products -->
+<section id="products" class="py-16 bg-white">
+  <div class="container mx-auto px-4">
+    <h3 class="text-3xl font-bold text-center mb-10">Featured Products</h3>
+    <div class="grid md:grid-cols-3 gap-8">
+      <!-- Product Card -->
+      <div *ngFor="let product of featuredProducts" 
+           (click)="goToProductDetail(product.id)"
+           class="relative h-64 rounded-2xl overflow-hidden cursor-pointer group"
+           [style.background-image]="'url(' + product.imageUrl + ')'"
+           style="background-size: cover; background-position: center;"
+      >
+        <!-- Gradient Overlay -->
+        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+
+        <!-- Content -->
+        <div class="absolute bottom-0 left-0 right-0 p-4 text-white">
+          <div class="flex justify-between items-center mb-2">
+            <h4 class="text-xl font-bold truncate">{{ product.description }}</h4>
+            <span class="font-semibold">{{ product.symbol }}{{ product.amount | number:'1.2-2' }}</span>
+          </div>
+
+          <div class="flex justify-between items-center text-sm">
+            <p class="text-gray-200">By: {{ product.userName }}</p>
+            <span class="text-xs px-2 py-1 rounded-full" 
+                  [ngClass]="product.isInactive ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'">
+              {{ product.isInactive ? 'Inactive' : 'Active' }}
+            </span>
+          </div>
+        </div>
+
+        <!-- Hover Effect -->
+        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Categories -->
+<section class="py-16 bg-gray-50">
+  <div class="container mx-auto px-4">
+    <h3 class="text-3xl font-bold text-center mb-10">Shop by Category</h3>
+    <div class="grid md:grid-cols-4 gap-6">
+      <div 
+        class="relative h-48 rounded-2xl overflow-hidden cursor-pointer group"
+        [style.background-image]="'url(assets/images/electronics.jpg)'"
+        style="background-size: cover; background-position: center;"
+      >
+        <!-- Gradient Overlay -->
+        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+        
+        <!-- Content -->
+        <div class="absolute bottom-0 left-0 right-0 p-4 text-white">
+          <h5 class="text-xl font-bold">Electronics</h5>
+        </div>
+
+        <!-- Hover Effect -->
+        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300"></div>
+      </div>
+
+      <div 
+        class="relative h-48 rounded-2xl overflow-hidden cursor-pointer group"
+        [style.background-image]="'url(assets/images/fashion.jpg)'"
+        style="background-size: cover; background-position: center;"
+      >
+        <!-- Gradient Overlay -->
+        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+        
+        <!-- Content -->
+        <div class="absolute bottom-0 left-0 right-0 p-4 text-white">
+          <h5 class="text-xl font-bold">Fashion</h5>
+        </div>
+
+        <!-- Hover Effect -->
+        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300"></div>
+      </div>
+
+      <div 
+        class="relative h-48 rounded-2xl overflow-hidden cursor-pointer group"
+        [style.background-image]="'url(assets/images/garden.jpg)'"
+        style="background-size: cover; background-position: center;"
+      >
+        <!-- Gradient Overlay -->
+        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+        
+        <!-- Content -->
+        <div class="absolute bottom-0 left-0 right-0 p-4 text-white">
+          <h5 class="text-xl font-bold">Home & Garden</h5>
+        </div>
+
+        <!-- Hover Effect -->
+        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300"></div>
+      </div>
+
+      <div 
+        class="relative h-48 rounded-2xl overflow-hidden cursor-pointer group"
+        [style.background-image]="'url(assets/images/toys.jpg)'"
+        style="background-size: cover; background-position: center;"
+      >
+        <!-- Gradient Overlay -->
+        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+        
+        <!-- Content -->
+        <div class="absolute bottom-0 left-0 right-0 p-4 text-white">
+          <h5 class="text-xl font-bold">Toys & Games</h5>
+        </div>
+
+        <!-- Hover Effect -->
+        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Newsletter -->
+<section class="bg-blue-600 text-white py-16">
+  <div class="container mx-auto px-4 text-center">
+    <h3 class="text-3xl font-bold mb-4">Stay Updated</h3>
+    <p class="mb-6">Subscribe to our newsletter and never miss a deal.</p>
+    <form class="flex flex-col md:flex-row items-center justify-center gap-4">
+      <input
+        type="email"
+        placeholder="Enter your email"
+        class="px-4 py-3 rounded-md w-full md:w-1/3 text-gray-800"
+        required />
+      <button
+        type="submit"
+        class="bg-white text-blue-600 px-6 py-3 rounded-md font-semibold hover:bg-gray-100 transition">
+        Subscribe
+      </button>
+    </form>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="bg-gray-900 text-white py-10">
+  <div class="container mx-auto px-4 grid md:grid-cols-4 gap-6">
+    <div>
+      <h4 class="font-bold text-lg mb-4">Xprizo</h4>
+      <p class="text-gray-400">Your go-to destination for smart, stylish shopping.</p>
+    </div>
+    <div>
+      <h4 class="font-bold mb-4">Quick Links</h4>
+      <ul class="space-y-2 text-gray-400">
+        <li><a routerLink="/products" class="hover:text-white">Shop</a></li>
+        <li><a href="#" class="hover:text-white">About Us</a></li>
+        <li><a href="#" class="hover:text-white">FAQ</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4 class="font-bold mb-4">Customer Service</h4>
+      <ul class="space-y-2 text-gray-400">
+        <li><a href="#" class="hover:text-white">Contact</a></li>
+        <li><a href="#" class="hover:text-white">Returns</a></li>
+        <li><a href="#" class="hover:text-white">Privacy Policy</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4 class="font-bold mb-4">Follow Us</h4>
+      <div class="flex space-x-4">
+        <a href="#" class="text-gray-400 hover:text-white">Facebook</a>
+        <a href="#" class="hover:text-white">Instagram</a>
+      </div>
+    </div>
+  </div>
+  <div class="mt-8 text-center text-gray-500 text-sm">
+    &copy; 2025 Xprizo. All rights reserved.
+  </div>
+</footer> 

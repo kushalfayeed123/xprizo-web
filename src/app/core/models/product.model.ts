@@ -11,6 +11,7 @@ export interface Product {
   token: string;
   paymentUrl: string;
   redirectUrl: string;
-  isInactive: string;
+  isInactive: boolean;
+  imageUrl?: string;
 }
 

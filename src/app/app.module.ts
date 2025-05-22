@@ -14,6 +14,7 @@ import { NgxsStoragePluginModule, StorageOption } from "@ngxs/storage-plugin";
 import { HttpClientModule } from "@angular/common/http";
 import { ProductModule } from "./modules/product/product.module";
 import { FormsModule } from "@angular/forms";
+import { HomeModule } from "./modules/home/home.module";
 
 @NgModule({
   declarations: [AppComponent],
@@ -22,6 +23,7 @@ import { FormsModule } from "@angular/forms";
     AppRoutingModule,
     ServiceModule,
     ProductModule,
+    HomeModule,
     FormsModule,
     HttpClientModule,
     NgxsModule.forRoot([ProductsState]),
@@ -35,7 +37,9 @@ import { FormsModule } from "@angular/forms";
       disabled: environment.production, // enable only in dev mode
     }),
   ],
-  providers: [],
+  providers: [
+    { provide: "environment", useValue: environment }
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
